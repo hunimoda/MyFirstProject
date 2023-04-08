@@ -129,6 +129,7 @@ void ABaseCharacter::OnFistOverlap(
 		UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
 		UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 		const FHitResult &SweepResult) {
+	if (OtherActor == this) return;
 	UGameplayStatics::SpawnEmitterAtLocation(
 			GetWorld(), DamagedFX, OverlappedComponent->GetComponentTransform());
 	UGameplayStatics::ApplyDamage(
