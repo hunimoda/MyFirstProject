@@ -367,6 +367,12 @@ void AWeapon::OnAttackFailure() {}
 <br>
 
 #### 나이프 (AKnife)
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/84118586/230758822-baa14ed3-bb2d-4324-baf2-a0ce350722f4.gif" alt="나이프" width="720" />
+
+  *[나이프]*
+</div>
+
 나이프를 사용한 공격 시 단순히 칼날에 부착된 콜리전을 일시적으로 활성화 한다.
 ```C++
 /// Knife.cpp 중 일부 /////
@@ -421,6 +427,12 @@ void AFirearm::OnAttackFailure() {
 <br>
 
 #### 총 (AGun)
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/84118586/230760016-a7b786b8-3122-4217-89e4-5550d4b42088.gif" alt="총" width="720" />
+
+  *[총]*
+</div>
+
 총이 런처와 가장 다른 점은 공격 시 실제 총알이 발사되는 것이 아니라, 라인 트레이스(**line trace**)를 통해 힛(**hit**)을 검사한다는 것이다. 검사 결과, 힛 액터가 적인 경우에 데미지를 가하고, 그 외 지점에 맞은 경우에는 힛 이펙트만 발생시킨다(ex. 돌이 튀기는 효과).
 ```C++
 /// Gun.cpp 중 일부 /////
@@ -449,6 +461,12 @@ void AGun::Attack() {
 <br>
 
 #### 런처 (ALauncher)
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/84118586/230760531-12d7f9aa-970d-4a7b-9bab-7168f2fbfe90.gif" alt="런처" width="720" />
+
+  *[런처]*
+</div>
+
 총이 라인 트레이스를 통해 공격을 수행한다면, 런처는 실제 폭약([AExplosive](#폭약-aexplosive))을 발사하고 폭약의 뇌관이 다른 액터와 오버랩하여 콜리전이 발생하면, 그 즉시 폭발하여 일정 반경 내의 액터들에 데미지를 입히는 방식으로 동작한다. 런처의 역할은 단순히 총구 위치에 폭약을 생성하는 것이고, 이를 발사시키는 것은 액터에 부착된 가속 컴포넌트([UAccelMovementComponent](#가속-uaccelmovementcomponent))의 역할이다.
 ```C++
 /// Launcher.cpp 중 일부 /////
@@ -477,6 +495,11 @@ void ALauncher::Attack() {
 
 ### 주요 컴포넌트의 핵심 기능
 #### 왕복 병진운동 (UPeriodicalMovementComponent)
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/84118586/230760823-c91c4cd7-abe7-47cb-9036-eece28e8a9eb.gif" alt="왕복 병진운동" width="720" />
+
+  *[왕복 병진운동]*
+</div>
 게임 내에서는 주기적인 움직임이 필요한 경우가 많다. 예를 들면, 아이템이 떠다니거나 지속적으로 회전하거나, 지형지물이 왔다갔다 하여 플레이어가 발판으로 이용하거나, 부비트랩이 움직이면서 플레이어에게 위협이 되어야 하는 등 다양한 상황이 있다. 이를 위해 **(1)병진운동**과 **(2)회전운동**을 하나의 주기운동 컴포넌트로 묶어 여러 액터가 공통으로 사용할 수 있도록 했다.
 ```C++
 /// PeriodicalMovementComponent.cpp 중 일부 /////
@@ -589,6 +612,12 @@ void UAccelMovementComponent::TickComponent(
 <br>
 
 #### 걷기-달리기 전환 (ULocomotionComponent)
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/84118586/230761487-12208b66-61b7-4d8e-898d-085241f46a9c.gif" alt="걷기-달리기 전환" width="720" />
+
+  *[걷기-달리기 전환]*
+</div>
+
 플레이어가 달릴 때에는 스태미나가 추가로 감소하며, 일정량 이상의 스태미나가 있어야만 달릴 수 있다. 스태미나가 일정 수준 이하로 떨어지면 더 이상 달릴 수 없고, 걷기로 자동 전환된다.
 ```C++
 /// LocomotionComponent.cpp 중 일부 /////
@@ -626,6 +655,12 @@ void ULocomotionComponent::Walk() {
 <br>
 
 #### 무기 장착 (UInventoryComponent)
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/84118586/230761752-04ca0cff-d908-4759-ae74-1c4b1cfd71bb.gif" alt="무기 장착" width="720" />
+
+  *[무기 장착]*
+</div>
+
 아이템에는 총알(폭약 포함), 포션, 무기 등이 있다. 총알과 포션은 수량 제한 없이 얻을 수 있으며, 총알은 인벤토리에 추가되고 포션은 즉시 복용하여 체력이나 스태미나 등을 회복한다. 그러나, 무기는 이미 같은 종류의 무기를 장착한 경우가 있기 때문에, <u>해당 종류의 무기를 장착하고 있지 않은 경우에만 아이템을 획득한다. 만일 이미 장착 중이라면, 플레이어에게 메시지를 출력하여 교체 여부를 선택할 수 있도록 한다.</u>
 ```C++
 /// Item.cpp 중 일부 /////
@@ -664,6 +699,12 @@ void UInventoryComponent::TryEquipWeapon(class AItem *Item) {
 
 ### 그 외
 #### 폭약 (AExplosive)
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/84118586/230762027-948003f9-146c-4c4a-af52-c34d9700412a.gif" alt="폭약" width="720" />
+
+  *[폭약]*
+</div>
+
 폭약은 **부비트랩**(booby trap)과 플레이어가 사용 가능한 **폭탄**(grenade, rocket) 등 두 종류의 액터를 구현하는 데에 사용된다. 특히 후자는, 런처([ALauncher](#런처-alauncher))에 의해 생성되고 가속 컴포넌트([UAccelMovementComponent](#가속-uaccelmovementcomponent))의 도움을 받아 발사된다. 폭약은 다른 액터와 충돌 시에 폭발하며, 일정 반경 내에 있는 액터(*플레이어와 적 모두*)들에게 데미지를 입힌다.  
 
 ```C++
