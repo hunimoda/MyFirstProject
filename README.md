@@ -148,7 +148,7 @@ void AMyGameMode::SaveGame(const FString &Level, bool bPlayerStart) {
 <div align="center">
   <img src="https://user-images.githubusercontent.com/84118586/230755642-bae0ebbc-c26a-469f-8b81-af3e16d7af68.gif" width="720" />
 
-  *[레벨 이동 또는 게임 클리어]*
+  *[레벨 이동, 또는 게임 클리어]*
 </div>
 
 게임은 레벨이 하나 이상 포함되며, 각 레벨마다 하나 이상의 적이 등장한다. 레벨을 클리어하려면 해당 레벨의 모든 적을 처치해야 한다. 적의 체력이 0이 되면, 게임 모드가 내부적으로 레벨에 있는 적의 수를 하나씩 줄인다. 만약 레벨에 등장하는 모든 적을 처치하면 [포털](#포털-aportal)이 활성화되고, 플레이어가 이를 통해 다음 레벨로 이동할 수 있다. 마지막 레벨의 경우에는 게임을 클리어하고 승리하게 된다.
@@ -180,7 +180,7 @@ void AMyGameMode::HandleEnemyDeath(AController *EventInstigator) {
 <div align="center">
   <img src="https://user-images.githubusercontent.com/84118586/230756064-ad39961c-8e08-4e8e-a8f6-6ddd6439cb60.gif" width="720" />
 
-  *[레벨 이동 또는 게임 클리어]*
+  *[세이브 포인트에서 게임 재개, 또는 게임 패배]*
 </div>
 
 게임을 시작할 때 플레이어는 **3개**의 목숨을 가진다. 플레이어는 적 또는 장애물의 공격을 받으면 체력이 감소하고, 체력이 0이 되면 죽게 된다. 이때, 게임 모드에서는 플레이어의 목숨 수를 차감하고, 남아있는 목숨이 없다면 게임에서 패배하게 된다. 목숨이 남아있는 경우에는 저장된 게임이 있는지에 따라 처리가 달라지게 된다. 어느 경우이든 현재 레벨을 다시 플레이 하도록 해야 하지만, 저장된 게임이 있다면 목숨 수가 차감되어야 하고, 없다면 목숨 수가 그대로여야 한다. 저장된 게임이 없다면 어차피 새 게임을 시작하게 되므로, 목숨 수가 줄어드는 것이 불이익이 되기 때문이다.
@@ -221,7 +221,7 @@ void AMyGameMode::HandlePlayerDeath() {
 <div align="center">
   <img src="https://user-images.githubusercontent.com/84118586/229267668-b2ec49ca-6005-4d67-be92-ecd6a12a04e5.png" width="720" />
 
-  _[적의 상태 변화]_
+  _[상태 다이어그램]_
 </div>
 
 게임 중에 적은 7개의 가능한 상태 가운데 어느 하나에 놓여있다. 레벨에 배치될 때에는 **Spawned** 상태에서 시작해서, 게임 시작 직후에 **Idle** 상태로 전이한다. 이후에는 별다른 일이 없으면 Idle 상태와 **Patrol** 상태를 오간다. 즉, 일정 시간이 경과하면 자동으로 Patrol 상태로 전이하고, 순찰 지점에 도착하면 다시 Idle 상태로 돌아가 일정 시간 동안 휴식을 취하는 방식이다.
@@ -250,6 +250,13 @@ if (BehaviorStatus == EBehaviorStatus::EBS_Sink) {
   TransitTo(EBehaviorStatus::EBS_Chase);
 }
 ```
+
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/84118586/230757375-97170b0d-f7f9-4b64-a2b4-066c0d70b5ca.gif" width="720" />
+
+  _[적의 상태 변화]_
+</div>
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
@@ -259,7 +266,7 @@ if (BehaviorStatus == EBehaviorStatus::EBS_Sink) {
 
 #### 적 순찰 지점(PatrolPoints) 등록
 <div align="center">
-  <img src="http://via.placeholder.com/640x480" width="720" />
+  <img src="https://user-images.githubusercontent.com/84118586/230756898-87ad2855-3546-4291-be53-da29d620c915.gif" width="720" />
 
   *[적 순찰 지점 등록]*
 </div>
