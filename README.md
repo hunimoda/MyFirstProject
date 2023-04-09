@@ -6,10 +6,10 @@ _<div align="right">Last update: 2023. 4. 9.</div>_
 <div align="center">
 
   <a href="https://www.youtube.com/watch?v=KUEe9YY8jvQ">
-    <img src="http://i3.ytimg.com/vi/KUEe9YY8jvQ/hqdefault.jpg" alt="게임 플레이 영상 썸네일" width="720" />
+    <img src="https://user-images.githubusercontent.com/84118586/230754844-5ddc4226-6ebc-4482-8c5a-641b18556ce5.gif" alt="게임 플레이 영상 썸네일" width="720" />
   </a>
   
-  🔗 *[https://www.youtube.com/watch?v=KUEe9YY8jvQ](https://www.youtube.com/watch?v=KUEe9YY8jvQ)*
+  🔗 *[Watch full version - https://www.youtube.com/watch?v=KUEe9YY8jvQ](https://www.youtube.com/watch?v=KUEe9YY8jvQ)*
 </div>
 <br>
 
@@ -75,9 +75,9 @@ _<div align="right">Last update: 2023. 4. 9.</div>_
 ## 전체 구성  
 ### 저장 및 불러오기 (Load|SaveGame)
 <div align="center">
-  <img src="https://user-images.githubusercontent.com/84118586/230706643-c62f9e85-793d-4ff3-bf29-6fbca40263c8.png" width="720" />
+  <img src="https://user-images.githubusercontent.com/84118586/230754455-1684b79d-085c-47fd-acf9-96d6c73a442c.gif" width="720" />
 
-  *[플레이 옵션]*
+  *[플레이 옵션 표시]*
 </div>
 
 게임 시작 직후, 저장된 게임이 있는지 확인하고, 있으면 저장된 게임을 이어서 시작하고 없으면 새 게임을 시작한다. BeginPlay는 레벨이 오픈될 때마다 호출되므로, 정적 변수(**bFirstPlay**)를 선언하여 게임을 처음 실행한 경우에만 플레이어에게 새 게임을 할 것인지, 아니면 저장된 게임을 이어서 할 것인지 묻도록 한다.
@@ -145,6 +145,12 @@ void AMyGameMode::SaveGame(const FString &Level, bool bPlayerStart) {
 <br>
 
 ### 적이 죽었을 때 (HandleEnemyDeath) > 勝
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/84118586/230755642-bae0ebbc-c26a-469f-8b81-af3e16d7af68.gif" width="720" />
+
+  *[레벨 이동 또는 게임 클리어]*
+</div>
+
 게임은 레벨이 하나 이상 포함되며, 각 레벨마다 하나 이상의 적이 등장한다. 레벨을 클리어하려면 해당 레벨의 모든 적을 처치해야 한다. 적의 체력이 0이 되면, 게임 모드가 내부적으로 레벨에 있는 적의 수를 하나씩 줄인다. 만약 레벨에 등장하는 모든 적을 처치하면 [포털](#포털-aportal)이 활성화되고, 플레이어가 이를 통해 다음 레벨로 이동할 수 있다. 마지막 레벨의 경우에는 게임을 클리어하고 승리하게 된다.
 ```C++
 /// MyGameMode.cpp 중 일부 /////
@@ -171,6 +177,12 @@ void AMyGameMode::HandleEnemyDeath(AController *EventInstigator) {
 <br>
 
 ### 플레이어가 죽었을 때 (HandlePlayerDeath) > 敗
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/84118586/230756064-ad39961c-8e08-4e8e-a8f6-6ddd6439cb60.gif" width="720" />
+
+  *[레벨 이동 또는 게임 클리어]*
+</div>
+
 게임을 시작할 때 플레이어는 **3개**의 목숨을 가진다. 플레이어는 적 또는 장애물의 공격을 받으면 체력이 감소하고, 체력이 0이 되면 죽게 된다. 이때, 게임 모드에서는 플레이어의 목숨 수를 차감하고, 남아있는 목숨이 없다면 게임에서 패배하게 된다. 목숨이 남아있는 경우에는 저장된 게임이 있는지에 따라 처리가 달라지게 된다. 어느 경우이든 현재 레벨을 다시 플레이 하도록 해야 하지만, 저장된 게임이 있다면 목숨 수가 차감되어야 하고, 없다면 목숨 수가 그대로여야 한다. 저장된 게임이 없다면 어차피 새 게임을 시작하게 되므로, 목숨 수가 줄어드는 것이 불이익이 되기 때문이다.
 ```C++
 /// MyGameMode.cpp 중 일부 /////
