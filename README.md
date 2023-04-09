@@ -5,11 +5,11 @@ _<div align="right">Last update: 2023. 4. 9.</div>_
 <br>
 <div align="center">
 
-  <a href="https://www.youtube.com/watch?v=KUEe9YY8jvQ">
+  <a href="https://youtu.be/aOBNxVN6-4Q">
     <img src="https://user-images.githubusercontent.com/84118586/230754844-5ddc4226-6ebc-4482-8c5a-641b18556ce5.gif" alt="게임 플레이 영상 썸네일" width="720" />
   </a>
   
-  🔗 *[Watch full version - https://www.youtube.com/watch?v=KUEe9YY8jvQ](https://www.youtube.com/watch?v=KUEe9YY8jvQ)*
+  🔗 *[Watch full version - https://www.youtube.com/watch?v=aOBNxVN6-4Q](https://www.youtube.com/watch?v=aOBNxVN6-4Q)*
 </div>
 <br>
 
