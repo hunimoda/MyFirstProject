@@ -1,12 +1,15 @@
-_<div align="right">Last update: 2023. 4. 8.</div>_
+_<div align="right">Last update: 2023. 4. 9.</div>_
 
 <!-- 제목 ---------------------------------------------->
 # MyFirstProject
 <br>
 <div align="center">
-  <img src="http://via.placeholder.com/640x480" width="720" />
 
-  *[플레이 영상(일부) - [전체 영상 링크](https://www.google.com/webhp?hl=en)]*
+  <a href="https://www.youtube.com/watch?v=KUEe9YY8jvQ">
+    <img src="http://i3.ytimg.com/vi/KUEe9YY8jvQ/hqdefault.jpg" alt="게임 플레이 영상 썸네일" width="720" />
+  </a>
+  
+  🔗 *[https://www.youtube.com/watch?v=KUEe9YY8jvQ](https://www.youtube.com/watch?v=KUEe9YY8jvQ)*
 </div>
 <br>
 
@@ -71,11 +74,16 @@ _<div align="right">Last update: 2023. 4. 8.</div>_
 ---
 ## 전체 구성  
 ### 저장 및 불러오기 (Load|SaveGame)
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/84118586/230706643-c62f9e85-793d-4ff3-bf29-6fbca40263c8.png" width="720" />
+
+  *[플레이 옵션]*
+</div>
+
 게임 시작 직후, 저장된 게임이 있는지 확인하고, 있으면 저장된 게임을 이어서 시작하고 없으면 새 게임을 시작한다. BeginPlay는 레벨이 오픈될 때마다 호출되므로, 정적 변수(**bFirstPlay**)를 선언하여 게임을 처음 실행한 경우에만 플레이어에게 새 게임을 할 것인지, 아니면 저장된 게임을 이어서 할 것인지 묻도록 한다.
 ```C++
 /// MyGameMode.cpp BeginPlay 중 일부 /////
 
-// ...
 // (1) 저장된 게임이 없으면 새 게임 시작
 // (2) 저장된 게임이 있고 최초 플레이면 플레이어가 플레이 옵션 선택
 // (3) 저장된 게임이 있고 두 번째 이후 플레이면 즉시 게임 로드
@@ -86,7 +94,6 @@ if (!UMySaveGame::HasSavedGame()) {
 } else {
   LoadGame();  // (3)
 }
-// ...
 ```
 새 게임을 시작하는 경우에는 기존 게임 정보를 삭제하고, 저장된 게임을 이어서 시작하는 경우에는 저장된 정보를 로드한다. 게임 로드를 위해 관리하는 정보는 _<u>게임 모드</u>_(남은 목숨 수, 게임 플레이 시간 등), _<u>플레이어</u>_(마지막 위치, 체력, 무기 상태 등), _<u>적</u>_(종류, 순찰 지점 등)에 대한 것이다. 관리하는 정보가 많기 때문에 모든 로직을 게임 모드에서 수행하지 않고, 플레이어와 적의 정보는 각각의 클래스에서 로드하도록 구현했다. 또한, 게임의 저장은 로딩의 역과정이 되도록 대칭적으로 구현했으며, 이 역시 플레이어와 적 클래스에서 로직을 분담하게 만들었다.
 ```C++
