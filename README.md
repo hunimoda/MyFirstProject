@@ -5,11 +5,11 @@ _<div align="right">Last update: 2023. 4. 9.</div>_
 <br>
 <div align="center">
 
-  <a href="https://youtu.be/aOBNxVN6-4Q">
+  <a href="https://www.youtube.com/watch?v=KUEe9YY8jvQ">
     <img src="https://user-images.githubusercontent.com/84118586/230754844-5ddc4226-6ebc-4482-8c5a-641b18556ce5.gif" alt="게임 플레이 영상 썸네일" width="720" />
   </a>
   
-  🔗 *[Watch full version - https://www.youtube.com/watch?v=aOBNxVN6-4Q](https://www.youtube.com/watch?v=aOBNxVN6-4Q)*
+  🔗 *[Watch full version - https://www.youtube.com/watch?v=KUEe9YY8jvQ](https://www.youtube.com/watch?v=KUEe9YY8jvQ)*
 </div>
 <br>
 
@@ -81,6 +81,7 @@ _<div align="right">Last update: 2023. 4. 9.</div>_
 </div>
 
 게임 시작 직후, 저장된 게임이 있는지 확인하고, 있으면 저장된 게임을 이어서 시작하고 없으면 새 게임을 시작한다. BeginPlay는 레벨이 오픈될 때마다 호출되므로, 정적 변수(**bFirstPlay**)를 선언하여 게임을 처음 실행한 경우에만 플레이어에게 새 게임을 할 것인지, 아니면 저장된 게임을 이어서 할 것인지 묻도록 한다.
+
 ```C++
 /// MyGameMode.cpp BeginPlay 중 일부 /////
 
@@ -95,7 +96,9 @@ if (!UMySaveGame::HasSavedGame()) {
   LoadGame();  // (3)
 }
 ```
+
 새 게임을 시작하는 경우에는 기존 게임 정보를 삭제하고, 저장된 게임을 이어서 시작하는 경우에는 저장된 정보를 로드한다. 게임 로드를 위해 관리하는 정보는 _<u>게임 모드</u>_(남은 목숨 수, 게임 플레이 시간 등), _<u>플레이어</u>_(마지막 위치, 체력, 무기 상태 등), _<u>적</u>_(종류, 순찰 지점 등)에 대한 것이다. 관리하는 정보가 많기 때문에 모든 로직을 게임 모드에서 수행하지 않고, 플레이어와 적의 정보는 각각의 클래스에서 로드하도록 구현했다. 또한, 게임의 저장은 로딩의 역과정이 되도록 대칭적으로 구현했으며, 이 역시 플레이어와 적 클래스에서 로직을 분담하게 만들었다.
+
 ```C++
 /// MyGameMode.cpp 중 일부 /////
 
@@ -152,6 +155,7 @@ void AMyGameMode::SaveGame(const FString &Level, bool bPlayerStart) {
 </div>
 
 게임은 레벨이 하나 이상 포함되며, 각 레벨마다 하나 이상의 적이 등장한다. 레벨을 클리어하려면 해당 레벨의 모든 적을 처치해야 한다. 적의 체력이 0이 되면, 게임 모드가 내부적으로 레벨에 있는 적의 수를 하나씩 줄인다. 만약 레벨에 등장하는 모든 적을 처치하면 [포털](#포털-aportal)이 활성화되고, 플레이어가 이를 통해 다음 레벨로 이동할 수 있다. 마지막 레벨의 경우에는 게임을 클리어하고 승리하게 된다.
+
 ```C++
 /// MyGameMode.cpp 중 일부 /////
 
@@ -169,6 +173,7 @@ void AMyGameMode::HandleEnemyDeath(AController *EventInstigator) {
   if (HUD) HUD->UpdateEnemyCount();
 }
 ```
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
@@ -184,6 +189,7 @@ void AMyGameMode::HandleEnemyDeath(AController *EventInstigator) {
 </div>
 
 게임을 시작할 때 플레이어는 **3개**의 목숨을 가진다. 플레이어는 적 또는 장애물의 공격을 받으면 체력이 감소하고, 체력이 0이 되면 죽게 된다. 이때, 게임 모드에서는 플레이어의 목숨 수를 차감하고, 남아있는 목숨이 없다면 게임에서 패배하게 된다. 목숨이 남아있는 경우에는 저장된 게임이 있는지에 따라 처리가 달라지게 된다. 어느 경우이든 현재 레벨을 다시 플레이 하도록 해야 하지만, 저장된 게임이 있다면 목숨 수가 차감되어야 하고, 없다면 목숨 수가 그대로여야 한다. 저장된 게임이 없다면 어차피 새 게임을 시작하게 되므로, 목숨 수가 줄어드는 것이 불이익이 되기 때문이다.
+
 ```C++
 /// MyGameMode.cpp 중 일부 /////
 
@@ -206,6 +212,7 @@ void AMyGameMode::HandlePlayerDeath() {
   }
 }
 ```
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
@@ -294,6 +301,7 @@ void AEnemy::ConvertPatrolPointsToWorld() {
   }
 }
 ```
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
@@ -356,6 +364,7 @@ void AWeapon::Attack() {
 
 void AWeapon::OnAttackFailure() {}
 ```
+
 플레이어가 무기를 장착한 상태에서 왼쪽 마우스를 클릭하면, 장착한 무기의 **TryAttack** 메서드가 호출된다. 이때, **CanAttack** 메서드가 *true*를 반환하는 상황에서만 실제 공격이 수행되며(**Attack**), *false*를 반환하는 상황에서는 **OnAttackFailure**가 호출된다. 일반적으로, 아직 공격이 끝나지 않은 상황에서 다시 공격할 수는 없으므로, CanAttack은 공격 중이지 않을 때 true를 반환하도록 구현했다.
 
 또한, Attack 메서드 실행 시 _**bAttacking**_ 변수를 true로 변경한 후 공격이 끝나면 다시 false로 되돌려, CanAttack이 실제 공격 중인지 여부를 반영할 수 있도록 했다. 베이스 클래스에서는 공격 시도가 실패할 때 따로 수행할 기능이 없으므로 OnAttackFailure 메서드의 구현이 비어있다. 하지만 CanAttack, Attack, OnAttackFailure 메서드는 모두 virtual로 선언되어 있으므로, 서브 클래스에서 기능의 확장이 필요하다면 이를 오버라이드할 수 있다. 예를 들어, <u>_Firearm 클래스에서 CanAttack 메서드는 공격 중일 때 뿐만 아니라, 총알이 없는 경우에도 false를 반환하며, OnAttackFailure 메서드에서 빈 탄창 사운드를 재생하도록 오버라이드 되어있다_</u>. 따라서, 총알이 없는 경우에 총기를 사용한 공격을 시도하면, 빈 탄창 사운드만 재생되고 총알은 발사되지 않는다.
@@ -374,6 +383,7 @@ void AWeapon::OnAttackFailure() {}
 </div>
 
 나이프를 사용한 공격 시 단순히 칼날에 부착된 콜리전을 일시적으로 활성화 한다.
+
 ```C++
 /// Knife.cpp 중 일부 /////
 
@@ -386,6 +396,7 @@ void AKnife::Attack() {
       DisableTimer, this, &AKnife::DisableBladeCollision, 0.84f);
 }
 ```
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
@@ -395,6 +406,7 @@ void AKnife::Attack() {
 
 #### 화기 (AFirearm)
 **총**과 **런처**는 모두 _발사할 대상_(총알 혹은 폭약)이 필요하다. 따라서, 장전(_LoadAmmos_)과 같은 기능을 공유하고 있으며, 장전되어 있지 않다면 공격할 수 없다. 이러한 기능들은 **AFirearm** 클래스에 정의되어 있고, 총과 런처는 이를 상속하여 사용한다. 두 클래스는 공격하는 방식에 약간의 차이가 있으며, 이는 각 클래스에서 오버라이딩을 통해 구현되었다. 더 자세한 내용은 각 클래스([AGun](#총-agun) 또는 [ALauncher](#런처-alauncher))에서 확인할 수 있다.
+
 ```C++
 /// Firearm.cpp 중 일부 /////
 
@@ -419,6 +431,7 @@ void AFirearm::OnAttackFailure() {
   }
 }
 ```
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
@@ -434,6 +447,7 @@ void AFirearm::OnAttackFailure() {
 </div>
 
 총이 런처와 가장 다른 점은 공격 시 실제 총알이 발사되는 것이 아니라, 라인 트레이스(**line trace**)를 통해 힛(**hit**)을 검사한다는 것이다. 검사 결과, 힛 액터가 적인 경우에 데미지를 가하고, 그 외 지점에 맞은 경우에는 힛 이펙트만 발생시킨다(ex. 돌이 튀기는 효과).
+
 ```C++
 /// Gun.cpp 중 일부 /////
 
@@ -453,6 +467,7 @@ void AGun::Attack() {
   }
 }
 ```
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
@@ -468,6 +483,7 @@ void AGun::Attack() {
 </div>
 
 총이 라인 트레이스를 통해 공격을 수행한다면, 런처는 실제 폭약([AExplosive](#폭약-aexplosive))을 발사하고 폭약의 뇌관이 다른 액터와 오버랩하여 콜리전이 발생하면, 그 즉시 폭발하여 일정 반경 내의 액터들에 데미지를 입히는 방식으로 동작한다. 런처의 역할은 단순히 총구 위치에 폭약을 생성하는 것이고, 이를 발사시키는 것은 액터에 부착된 가속 컴포넌트([UAccelMovementComponent](#가속-uaccelmovementcomponent))의 역할이다.
+
 ```C++
 /// Launcher.cpp 중 일부 /////
 
@@ -486,6 +502,7 @@ void ALauncher::Attack() {
   Explosive->Instigator = Shooter->GetController();
 }
 ```
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
@@ -501,6 +518,7 @@ void ALauncher::Attack() {
   *[왕복 병진운동]*
 </div>
 게임 내에서는 주기적인 움직임이 필요한 경우가 많다. 예를 들면, 아이템이 떠다니거나 지속적으로 회전하거나, 지형지물이 왔다갔다 하여 플레이어가 발판으로 이용하거나, 부비트랩이 움직이면서 플레이어에게 위협이 되어야 하는 등 다양한 상황이 있다. 이를 위해 **(1)병진운동**과 **(2)회전운동**을 하나의 주기운동 컴포넌트로 묶어 여러 액터가 공통으로 사용할 수 있도록 했다.
+
 ```C++
 /// PeriodicalMovementComponent.cpp 중 일부 /////
 
@@ -512,6 +530,7 @@ void UPeriodicalMovementComponent::TickComponent(
   if (bShouldRotate) Rotate(DeltaTime);  // 회전운동
 }
 ```
+
 특히, 병진운동은 간단한 벡터 수학을 응용하여 아래와 같은 원리로 구현할 수 있었다.
 <div align="center">
   <img src="https://user-images.githubusercontent.com/84118586/229274222-66a1fd1f-0564-4d1e-93ec-cd50855c514e.png" width="360" />
@@ -562,6 +581,7 @@ float UPeriodicalMovementComponent::GetAlpha(float Time) const {
   return 1.f - GetAlphaBeforeTravelTime(Time);
 }
 ```
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
@@ -604,6 +624,7 @@ void UAccelMovementComponent::TickComponent(
   }
 }
 ```
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
@@ -619,6 +640,7 @@ void UAccelMovementComponent::TickComponent(
 </div>
 
 플레이어가 달릴 때에는 스태미나가 추가로 감소하며, 일정량 이상의 스태미나가 있어야만 달릴 수 있다. 스태미나가 일정 수준 이하로 떨어지면 더 이상 달릴 수 없고, 걷기로 자동 전환된다.
+
 ```C++
 /// LocomotionComponent.cpp 중 일부 /////
 
@@ -647,6 +669,7 @@ void ULocomotionComponent::Walk() {
   SetComponentTickEnabled(false);
 }
 ```
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
@@ -662,6 +685,7 @@ void ULocomotionComponent::Walk() {
 </div>
 
 아이템에는 총알(폭약 포함), 포션, 무기 등이 있다. 총알과 포션은 수량 제한 없이 얻을 수 있으며, 총알은 인벤토리에 추가되고 포션은 즉시 복용하여 체력이나 스태미나 등을 회복한다. 그러나, 무기는 이미 같은 종류의 무기를 장착한 경우가 있기 때문에, <u>해당 종류의 무기를 장착하고 있지 않은 경우에만 아이템을 획득한다. 만일 이미 장착 중이라면, 플레이어에게 메시지를 출력하여 교체 여부를 선택할 수 있도록 한다.</u>
+
 ```C++
 /// Item.cpp 중 일부 /////
 
@@ -690,6 +714,7 @@ void UInventoryComponent::TryEquipWeapon(class AItem *Item) {
   }
 }
 ```
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
@@ -729,6 +754,7 @@ void AExplosive::ApplyDamageToOverlappingActors() {
   }
 }
 ```
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
@@ -774,6 +800,7 @@ void AMyGameMode::InitializePortal() {
   }
 }
 ```
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
@@ -828,7 +855,9 @@ void AShooterOverlap::OnSphereBeginOverlap(
   }
 }
 ```
+
 아래는 아이템, 포털, 그리고 세이브 포인트 각 클래스마다 다르게 오버라이드된 **OnShooterOverlap** 메서드의 구현이다.
+
 ```C++
 /// Item.cpp 중 일부 /////
 
@@ -868,6 +897,7 @@ void ASavePoint::OnShooterOverlap(class AShooter *Shooter) {
   Destroy();
 }
 ```
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
@@ -877,6 +907,7 @@ void ASavePoint::OnShooterOverlap(class AShooter *Shooter) {
 
 #### 체력 회복 (Stamina)
 플레이어가 달리고 있지 않으면 스태미나는 일정한 속도로 감소하며, 체력은 스태미나의 양에 비례하여 회복된다. 스태미나가 100%일 때는 가장 빠른 속도로 회복되며, 스태미나가 바닥인 상태에서는 회복이 전혀 이루어지지 않는다.
+
 ```C++
 /// Shooter.cpp 중 일부 /////
 
@@ -891,6 +922,7 @@ void AShooter::Tick (float DeltaSeconds) {
   if (ShouldDisableTick()) SetActorTickEnabled(false);
 }
 ```
+
 <!-- 위로가기 아이콘 ----->
 <div align="right">
 
